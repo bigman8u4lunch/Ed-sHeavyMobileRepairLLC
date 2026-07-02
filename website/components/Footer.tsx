@@ -23,10 +23,9 @@ export default function Footer() {
               <Image
                 src="/images/logo.webp"
                 alt={`${business.name} Logo`}
-                width={220}
-                height={56}
-                className="site-logo site-logo--footer"
-                style={{ height: 48, width: "auto" }}
+                width={160}
+                height={40}
+                style={{ height: 40, width: "auto" }}
               />
             </div>
             <p>Your trusted partner for heavy duty truck and diesel repair services.</p>
