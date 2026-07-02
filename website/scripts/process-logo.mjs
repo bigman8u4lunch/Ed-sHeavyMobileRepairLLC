@@ -33,7 +33,12 @@ const processed = sharp(data, {
   raw: { width: info.width, height: info.height, channels: 4 },
 });
 
-await processed.clone().png().toFile(path.join(imagesDir, "logo.png"));
-await processed.clone().webp({ quality: 95 }).toFile(path.join(imagesDir, "logo.webp"));
+const trimmed = processed.clone().trim({ threshold: 10 });
+const trimmedMeta = await trimmed.metadata();
 
-console.log(`Processed ${info.width}x${info.height} logo → logo.png & logo.webp`);
+await trimmed.clone().png().toFile(path.join(imagesDir, "logo.png"));
+await trimmed.clone().webp({ quality: 95 }).toFile(path.join(imagesDir, "logo.webp"));
+
+console.log(
+  `Processed ${info.width}x${info.height} logo → trimmed ${trimmedMeta.width}x${trimmedMeta.height} → logo.png & logo.webp`
+);

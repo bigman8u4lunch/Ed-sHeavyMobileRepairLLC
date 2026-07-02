@@ -79,7 +79,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`badge-logo ${inter.className}`}>
+      <body className={inter.className}>
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${business.gtmId}`}
