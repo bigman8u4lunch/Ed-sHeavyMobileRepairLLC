@@ -102,10 +102,10 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
           <div className="header-content">
             <Link href="/" className="logo">
               <Image
-                src="/images/logo.webp"
+                src="/images/logo.png"
                 alt={`${business.name} Logo`}
-                width={200}
-                height={48}
+                width={220}
+                height={42}
                 priority
               />
             </Link>
@@ -213,10 +213,10 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
         <div className="mobile-nav-header">
           <Link href="/" className="logo" onClick={toggleMenu}>
             <Image
-              src="/images/logo.webp"
+              src="/images/logo.png"
               alt={`${business.name} Logo`}
-              width={140}
-              height={40}
+              width={180}
+              height={34}
             />
           </Link>
           <button
