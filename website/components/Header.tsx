@@ -104,8 +104,8 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
               <Image
                 src="/images/logo.webp"
                 alt={`${business.name} Logo`}
-                width={160}
-                height={110}
+                width={200}
+                height={48}
                 priority
               />
             </Link>
