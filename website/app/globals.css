@@ -5750,3 +5750,35 @@ body.mobile-menu-open .mobile-nav {
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* Logo: white artwork needs a dark badge, not white */
+body.badge-logo .logo img.site-logo {
+    height: 110px;
+    width: auto;
+    max-width: 280px;
+    object-fit: contain;
+    background: #000000 !important;
+    border-radius: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+img.site-logo--footer {
+    background: #000000;
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.5rem;
+}
+
+@media (max-width: 768px) {
+    body.badge-logo .logo img.site-logo {
+        height: 80px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.badge-logo .logo img.site-logo {
+        height: 64px;
+        max-width: 160px;
+    }
+}
