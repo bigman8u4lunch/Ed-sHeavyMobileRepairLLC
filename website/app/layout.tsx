@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     images: ["/images/hero.jpg"],
   },
   icons: {
-    icon: "/images/logo.png",
+    icon: "/images/logo.webp",
   },
 };
 
@@ -53,8 +53,8 @@ const structuredData = {
     postalCode: business.address.zip,
     addressCountry: "US",
   },
-  logo: "https://edsheavymobile.com/images/logo.png",
-  image: "https://edsheavymobile.com/images/logo.png",
+  logo: "https://edsheavymobile.com/images/logo.webp",
+  image: "https://edsheavymobile.com/images/logo.webp",
   openingHoursSpecification: [
     { dayOfWeek: "Monday", opens: "07:00", closes: "17:00" },
     { dayOfWeek: "Tuesday", opens: "07:00", closes: "17:00" },

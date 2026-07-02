@@ -21,10 +21,10 @@ export default function Footer() {
           <div className="footer-brand">
             <div className="logo">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt={`${business.name} Logo`}
-                width={200}
-                height={38}
+                width={613}
+                height={195}
                 style={{ height: 40, width: "auto" }}
               />
             </div>

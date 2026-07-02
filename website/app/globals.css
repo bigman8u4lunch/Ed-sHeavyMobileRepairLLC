@@ -5755,9 +5755,10 @@ body.mobile-menu-open .mobile-nav {
 .header .logo img,
 .mobile-nav-header .logo img {
     height: 48px;
-    max-width: 220px;
+    max-width: 240px;
     width: auto;
     object-fit: contain;
+    object-position: left center;
     background: none !important;
     padding: 0 !important;
     box-shadow: none !important;
