@@ -1,39 +1,37 @@
-# Ed's Heavy Mobile Repair Website
+# Ed's Heavy Mobile Repair LLC
 
-Self-hosted recreation of [edsheavymobile.com](https://www.edsheavymobile.com), built with Next.js so you can deploy independently of ShopView or any other site builder.
+Repository for Ed's Heavy Mobile Repair website and related assets.
 
-## Pages
+## Project folder
 
-- **Home** — hero, about intro, services/repairs overview, testimonials, contact
-- **About** — company story and sidebar with hours/contact
-- **Services** — all 13 service offerings with descriptions
-- **Repairs** — all 17 repair categories with descriptions
-- **Contact** — contact form, business info, and map
-
-## Getting Started
+The website lives in the **`website/`** folder. Open that directory in your editor or terminal to work on the site.
 
 ```bash
+cd website
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then visit [http://localhost:3000](http://localhost:3000).
+
+## Clone locally
+
+To get this on your machine:
+
+```bash
+git clone https://github.com/bigman8u4lunch/Ed-sHeavyMobileRepairLLC.git
+cd Ed-sHeavyMobileRepairLLC/website
+npm install
+npm run dev
+```
 
 ## Deploy
 
-Deploy to [Vercel](https://vercel.com), Netlify, or any Node.js host:
+From the `website/` folder:
 
 ```bash
 npm run build
 npm start
 ```
 
-Point your domain `edsheavymobile.com` to the deployment when ready to switch from the current provider.
-
-## Contact Form
-
-The contact form opens the visitor's email client with a pre-filled message to `service@edsheavymobile.com`. To use a server-side form handler (Formspree, Resend, etc.), update `components/ContactForm.tsx`.
-
-## Assets
-
-All images are stored locally in `public/images/` — no dependency on the previous hosting provider's CDN.
+Deploy the `website/` directory to Vercel, Netlify, or any Node.js host, then point `edsheavymobile.com` to it when ready to leave ShopView.
