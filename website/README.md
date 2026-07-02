@@ -4,8 +4,17 @@ Self-hosted recreation of [edsheavymobile.com](https://www.edsheavymobile.com), 
 
 ## Quick start
 
+From the **repo root**:
+
 ```bash
-npm install
+npm run setup
+npm run dev
+```
+
+Or from this folder:
+
+```bash
+npm run setup
 npm run dev
 ```
 
@@ -44,4 +53,4 @@ npm run build
 npm start
 ```
 
-When deploying to Vercel, set the **Root Directory** to `website`.
+When deploying to Vercel, either set **Root Directory** to `website` (recommended), or deploy from the repo root — the root `vercel.json` handles the build via `npm run setup` and `npm run build`.

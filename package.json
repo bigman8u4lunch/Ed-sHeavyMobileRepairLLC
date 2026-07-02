@@ -1,0 +1,13 @@
+{
+  "name": "edsheavymobile-repair",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ed's Heavy Mobile Repair — repo root scripts (site code lives in website/)",
+  "scripts": {
+    "setup": "npm install --prefix website",
+    "dev": "npm run dev --prefix website",
+    "build": "npm run build --prefix website",
+    "start": "npm run start --prefix website",
+    "lint": "npm run lint --prefix website"
+  }
+}
