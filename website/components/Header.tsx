@@ -104,8 +104,8 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
               <Image
                 src="/images/logo.webp"
                 alt={`${business.name} Logo`}
-                width={613}
-                height={195}
+                width={1080}
+                height={1080}
                 priority
               />
             </Link>
@@ -215,8 +215,8 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
             <Image
               src="/images/logo.webp"
               alt={`${business.name} Logo`}
-              width={613}
-              height={195}
+              width={1080}
+              height={1080}
             />
           </Link>
           <button

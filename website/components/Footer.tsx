@@ -23,8 +23,8 @@ export default function Footer() {
               <Image
                 src="/images/logo.webp"
                 alt={`${business.name} Logo`}
-                width={613}
-                height={195}
+                width={1080}
+                height={1080}
                 style={{ height: 40, width: "auto" }}
               />
             </div>
