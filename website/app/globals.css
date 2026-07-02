@@ -5751,11 +5751,31 @@ body.mobile-menu-open .mobile-nav {
     object-fit: cover;
 }
 
-/* White transparent logo: no badge box, sits directly on dark header */
+/* Logo sizing to match original ShopView prominence (square artwork) */
+body.badge-logo .header {
+    overflow: visible;
+    z-index: 100;
+    height: 64px;
+    min-height: 64px;
+    max-height: 64px;
+}
+
+body.badge-logo .header-content {
+    height: 64px;
+    padding: 0;
+}
+
+body.badge-logo .logo {
+    position: relative;
+    z-index: 101;
+    align-self: flex-start;
+    padding-top: 0.5rem;
+}
+
 .header .logo img,
 .mobile-nav-header .logo img {
-    height: 48px;
-    max-width: 240px;
+    height: 110px;
+    max-width: 160px;
     width: auto;
     object-fit: contain;
     object-position: left center;
@@ -5766,8 +5786,8 @@ body.mobile-menu-open .mobile-nav {
 }
 
 .footer-brand .logo img {
-    height: 40px;
-    max-width: 200px;
+    height: 64px;
+    max-width: 120px;
     width: auto;
     object-fit: contain;
     background: none !important;
@@ -5778,7 +5798,14 @@ body.mobile-menu-open .mobile-nav {
 
 @media (max-width: 768px) {
     .header .logo img {
-        height: 40px;
-        max-width: 180px;
+        height: 80px;
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header .logo img {
+        height: 64px;
+        max-width: 100px;
     }
 }
