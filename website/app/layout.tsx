@@ -60,9 +60,6 @@ const structuredData = {
     { dayOfWeek: "Tuesday", opens: "07:00", closes: "17:00" },
     { dayOfWeek: "Wednesday", opens: "07:00", closes: "17:00" },
     { dayOfWeek: "Thursday", opens: "07:00", closes: "17:00" },
-    { dayOfWeek: "Friday", opens: "07:00", closes: "17:00" },
-    { dayOfWeek: "Saturday", opens: "07:00", closes: "12:00" },
-    { dayOfWeek: "Sunday", opens: "07:00", closes: "12:00" },
   ],
 };
 

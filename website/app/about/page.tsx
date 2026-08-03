@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { business } from "@/lib/site-data";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Header activePath="/about" />
+      <SiteHeader activePath="/about" />
 
       <PageHeader
         title={`About ${business.name}`}

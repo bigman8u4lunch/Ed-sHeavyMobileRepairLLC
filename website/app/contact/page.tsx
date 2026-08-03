@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import ContactForm from "@/components/ContactForm";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Header activePath="/contact" />
+      <SiteHeader activePath="/contact" />
 
       <PageHeader
         title="Contact Us"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { repairs } from "@/lib/site-data";
@@ -21,7 +21,7 @@ const ArrowIcon = () => (
 export default function RepairsPage() {
   return (
     <>
-      <Header activePath="/repairs" />
+      <SiteHeader activePath="/repairs" />
 
       <PageHeader
         title="Repair Services"
