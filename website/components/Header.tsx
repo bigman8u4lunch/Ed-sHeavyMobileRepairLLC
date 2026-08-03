@@ -1,9 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { business, serviceNames, repairNames } from "@/lib/site-data";
+import {
+  business,
+  serviceNames,
+  repairNames,
+  type BusinessHour,
+} from "@/lib/site-data";
+import { buildTodayHoursLabel } from "@/lib/hours-label";
 
 const ChevronDown = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -11,16 +17,54 @@ const ChevronDown = () => (
   </svg>
 );
 
-function getTodayHours() {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const today = days[new Date().getDay()];
-  const entry = business.hours.find((h) => h.day === today);
-  return entry ? `Open Today: ${entry.hours}` : "";
-}
-
-export default function Header({ activePath = "/" }: { activePath?: string }) {
+export default function Header({
+  activePath = "/",
+  initialHours = business.hours,
+  initialOpenNow = null,
+}: {
+  activePath?: string;
+  /** Weekly hours from Google Places (or static fallback) via SiteHeader. */
+  initialHours?: BusinessHour[];
+  initialOpenNow?: boolean | null;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [hoursLabel, setHoursLabel] = useState(() =>
+    buildTodayHoursLabel(initialHours, initialOpenNow),
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const apply = (hours: BusinessHour[], openNow: boolean | null) => {
+      if (!cancelled) setHoursLabel(buildTodayHoursLabel(hours, openNow));
+    };
+
+    apply(initialHours, initialOpenNow);
+
+    // Refresh from the API so openNow / listing changes stay current.
+    fetch("/api/hours")
+      .then((res) => (res.ok ? res.json() : null))
+      .then(
+        (data: {
+          hours?: BusinessHour[];
+          openNow?: boolean | null;
+        } | null) => {
+          if (!data?.hours?.length) return;
+          apply(
+            data.hours,
+            typeof data.openNow === "boolean" ? data.openNow : null,
+          );
+        },
+      )
+      .catch(() => {
+        /* keep server-provided / fallback hours */
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialHours, initialOpenNow]);
 
   const toggleMenu = () => setMenuOpen((o) => !o);
   const toggleDropdown = (name: string) =>
@@ -76,7 +120,7 @@ export default function Header({ activePath = "/" }: { activePath?: string }) {
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
-                {getTodayHours()}
+                {hoursLabel}
               </span>
               <span className="top-bar-item">
                 <svg

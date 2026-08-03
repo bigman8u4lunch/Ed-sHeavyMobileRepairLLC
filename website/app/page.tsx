@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import { business, services, repairs, testimonials } from "@/lib/site-data";
 
@@ -29,7 +29,7 @@ const GoogleIcon = () => (
 export default function HomePage() {
   return (
     <>
-      <Header activePath="/" />
+      <SiteHeader activePath="/" />
 
       <section className="hero has-image">
         <div className="hero-bg-image">

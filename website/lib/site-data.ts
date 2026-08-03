@@ -1,3 +1,8 @@
+export type BusinessHour = {
+  day: "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat";
+  hours: string;
+};
+
 export const business = {
   name: "Ed's Heavy Mobile Repair",
   phone: "(858) 334-8385",
@@ -10,18 +15,20 @@ export const business = {
     zip: "92027",
     full: "2534 East El Norte Parkway, Escondido, CA 92027",
   },
+  googlePlaceId: "ChIJT343UpvzgQsRb59ytBjr3O0",
   googleMapsUrl:
     "https://www.google.com/maps/place/?q=place_id:ChIJT343UpvzgQsRb59ytBjr3O0",
   googleBusinessUrl: "https://maps.google.com/?cid=17139832773204418415",
+  // Fallback when GOOGLE_PLACES_API_KEY is unset — kept in sync with the Google listing.
   hours: [
     { day: "Mon", hours: "7:00 AM - 5:00 PM" },
     { day: "Tue", hours: "7:00 AM - 5:00 PM" },
     { day: "Wed", hours: "7:00 AM - 5:00 PM" },
     { day: "Thu", hours: "7:00 AM - 5:00 PM" },
-    { day: "Fri", hours: "7:00 AM - 5:00 PM" },
-    { day: "Sat", hours: "7:00 AM - 12:00 PM" },
-    { day: "Sun", hours: "7:00 AM - 12:00 PM" },
-  ],
+    { day: "Fri", hours: "Closed" },
+    { day: "Sat", hours: "Closed" },
+    { day: "Sun", hours: "Closed" },
+  ] satisfies BusinessHour[],
   gtmId: "GTM-NSCH3JX9",
 };
 

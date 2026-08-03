@@ -42,6 +42,17 @@ website/
 └── next.config.ts
 ```
 
+## Google listing hours
+
+The top bar schedule is loaded from the Google Business listing via the Places API (New) when `GOOGLE_PLACES_API_KEY` is set. Without a key it falls back to the hours in `lib/site-data.ts` (kept aligned with the Google listing).
+
+```bash
+# website/.env.local
+GOOGLE_PLACES_API_KEY=your_key_here
+```
+
+Enable **Places API (New)** for the key in Google Cloud. The place ID is `business.googlePlaceId` in `lib/site-data.ts`.
+
 ## Contact form
 
 The form opens the visitor's email client with a pre-filled message to `service@edsheavymobile.com`. To use a server-side handler (Formspree, Resend, etc.), edit `components/ContactForm.tsx`.
