@@ -5,30 +5,51 @@ import { business } from "@/lib/site-data";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
+    setSending(true);
+
     const form = e.currentTarget;
     const data = new FormData(form);
-    const name = data.get("name");
-    const phone = data.get("phone");
-    const email = data.get("email");
-    const inquiryType = data.get("inquiry_type");
-    const message = data.get("message");
 
-    const subject = encodeURIComponent(
-      `Service Inquiry: ${inquiryType} - ${name}`
-    );
-    const body = encodeURIComponent(
-      `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nInquiry Type: ${inquiryType}\n\nMessage:\n${message}`
-    );
+    const payload = {
+      name: String(data.get("name") ?? ""),
+      phone: String(data.get("phone") ?? ""),
+      email: String(data.get("email") ?? ""),
+      inquiry_type: String(data.get("inquiry_type") ?? ""),
+      message: String(data.get("message") ?? ""),
+      website: String(data.get("website") ?? ""),
+    };
 
     try {
-      window.location.href = `mailto:${business.email}?subject=${subject}&body=${body}`;
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+
+      if (!response.ok) {
+        setError(
+          result?.error ??
+            `Something went wrong. Please call us at ${business.phone}.`
+        );
+        return;
+      }
+
       setSubmitted(true);
+      form.reset();
     } catch {
-      setError(true);
+      setError(`Something went wrong. Please call us at ${business.phone}.`);
+    } finally {
+      setSending(false);
     }
   }
 
@@ -49,8 +70,8 @@ export default function ContactForm() {
         </svg>
         <h3 style={{ marginBottom: "0.5rem" }}>Thank You!</h3>
         <p style={{ color: "var(--text-secondary)" }}>
-          Your email client should open with your message. If it doesn&apos;t, please
-          call us at{" "}
+          Your message was sent to our service team. We&apos;ll get back to you
+          as soon as possible. For urgent needs, call us at{" "}
           <a href={`tel:${business.phoneTel}`} style={{ color: "var(--primary)" }}>
             {business.phone}
           </a>
@@ -72,6 +93,8 @@ export default function ContactForm() {
               name="name"
               placeholder="Your full name"
               required
+              maxLength={200}
+              disabled={sending}
             />
           </div>
           <div className="form-group">
@@ -82,6 +105,8 @@ export default function ContactForm() {
               name="phone"
               placeholder="(555) 123-4567"
               required
+              maxLength={50}
+              disabled={sending}
             />
           </div>
         </div>
@@ -94,12 +119,19 @@ export default function ContactForm() {
             name="email"
             placeholder="your@email.com"
             required
+            disabled={sending}
           />
         </div>
 
         <div className="form-group">
           <label htmlFor="inquiry_type">Inquiry Type</label>
-          <select id="inquiry_type" name="inquiry_type" required defaultValue="">
+          <select
+            id="inquiry_type"
+            name="inquiry_type"
+            required
+            defaultValue=""
+            disabled={sending}
+          >
             <option value="" disabled>
               Select an option
             </option>
@@ -117,22 +149,46 @@ export default function ContactForm() {
             name="message"
             placeholder="Tell us about your service or repair needs..."
             required
+            maxLength={5000}
+            disabled={sending}
           />
         </div>
 
-        <button type="submit" className="form-submit">
-          Send Message
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <line x1="22" y1="2" x2="11" y2="13" />
-            <polygon points="22 2 15 22 11 13 2 9 22 2" />
-          </svg>
+        {/* Honeypot field — leave empty */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            height: 0,
+            overflow: "hidden",
+          }}
+        >
+          <label htmlFor="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+
+        <button type="submit" className="form-submit" disabled={sending}>
+          {sending ? "Sending..." : "Send Message"}
+          {!sending && (
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          )}
         </button>
       </form>
 
@@ -148,8 +204,13 @@ export default function ContactForm() {
           }}
         >
           <p style={{ color: "#dc2626" }}>
-            Something went wrong. Please call us at{" "}
-            <a href={`tel:${business.phoneTel}`}>{business.phone}</a>.
+            {error}{" "}
+            {!error.includes(business.phone) && (
+              <>
+                Or call{" "}
+                <a href={`tel:${business.phoneTel}`}>{business.phone}</a>.
+              </>
+            )}
           </p>
         </div>
       )}

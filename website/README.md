@@ -55,7 +55,16 @@ Enable **Places API (New)** for the key in Google Cloud. The place ID is `busine
 
 ## Contact form
 
-The form opens the visitor's email client with a pre-filled message to `service@edsheavymobile.com`. To use a server-side handler (Formspree, Resend, etc.), edit `components/ContactForm.tsx`.
+The “Send Us a Message” form posts to `/api/contact` and delivers to `service@edsheavymobile.com`.
+
+**Preferred:** Install **Resend** from the [Vercel Marketplace](https://vercel.com/marketplace/resend) (adds `RESEND_API_KEY`), verify `edsheavymobile.com`, then set:
+
+```bash
+CONTACT_TO_EMAIL=service@edsheavymobile.com
+CONTACT_FROM_EMAIL=Ed's Heavy Mobile Repair <service@edsheavymobile.com>
+```
+
+**Fallback:** If `RESEND_API_KEY` is unset, submissions use FormSubmit. The first message triggers a one-time activation email to `service@edsheavymobile.com` — confirm that link, then later messages deliver normally.
 
 ## Deploy
 
