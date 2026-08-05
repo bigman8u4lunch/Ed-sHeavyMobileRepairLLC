@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
@@ -75,9 +74,9 @@ export default function AboutPage() {
                 <p>
                   Contact us today to schedule your repair or maintenance service.
                 </p>
-                <Link href="/contact" className="cta-btn">
-                  Get in Touch
-                </Link>
+                <a href={business.requestServiceUrl} className="cta-btn">
+                  Request Service
+                </a>
               </div>
             </div>
           </div>
