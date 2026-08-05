@@ -74,12 +74,7 @@ export default function AboutPage() {
                 <p>
                   Contact us today to schedule your repair or maintenance service.
                 </p>
-                <a
-                  href={business.requestServiceUrl}
-                  className="cta-btn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={business.requestServiceUrl} className="cta-btn">
                   Request Service
                 </a>
               </div>

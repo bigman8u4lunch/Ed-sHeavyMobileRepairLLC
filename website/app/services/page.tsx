@@ -49,12 +49,7 @@ export default function ServicesPage() {
             Contact us today to schedule your service appointment or get a quote for
             your fleet.
           </p>
-          <a
-            href={business.requestServiceUrl}
-            className="cta-button"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={business.requestServiceUrl} className="cta-button">
             Request Service
             <ArrowIcon />
           </a>

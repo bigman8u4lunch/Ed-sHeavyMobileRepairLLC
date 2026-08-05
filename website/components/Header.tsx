@@ -214,12 +214,7 @@ export default function Header({
               >
                 Contact
               </Link>
-              <a
-                href={business.requestServiceUrl}
-                className="nav-cta"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={business.requestServiceUrl} className="nav-cta">
                 Request Service
               </a>
             </nav>
@@ -356,8 +351,6 @@ export default function Header({
         <a
           href={business.requestServiceUrl}
           className="mobile-nav-cta"
-          target="_blank"
-          rel="noopener noreferrer"
           onClick={toggleMenu}
         >
           Request Service

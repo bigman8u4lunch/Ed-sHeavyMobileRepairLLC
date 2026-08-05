@@ -46,12 +46,7 @@ export default function RepairsPage() {
         <div className="container">
           <h2>Need Emergency Repairs?</h2>
           <p>Our team is ready to help. Contact us now to get your truck back on the road.</p>
-          <a
-            href={business.requestServiceUrl}
-            className="cta-button"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={business.requestServiceUrl} className="cta-button">
             Request Service
             <ArrowIcon />
           </a>
