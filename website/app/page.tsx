@@ -52,10 +52,15 @@ export default function HomePage() {
               Professional heavy duty repair services you can trust. Keeping your
               fleet on the road with expert maintenance and repairs.
             </p>
-            <Link href="/contact" className="hero-cta">
-              Schedule Service
+            <a
+              href={business.requestServiceUrl}
+              className="hero-cta"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Request Service
               <ArrowIcon />
-            </Link>
+            </a>
           </div>
         </div>
       </section>

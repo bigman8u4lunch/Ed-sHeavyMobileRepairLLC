@@ -19,6 +19,8 @@ export const business = {
   googleMapsUrl:
     "https://www.google.com/maps/place/?q=place_id:ChIJT343UpvzgQsRb59ytBjr3O0",
   googleBusinessUrl: "https://maps.google.com/?cid=17139832773204418415",
+  requestServiceUrl:
+    "https://app.repairfront.com/l/9iC8xG-Sl1ziq9-hx-KWcaEaVJyrl_-H",
   // Fallback when GOOGLE_PLACES_API_KEY is unset — kept in sync with the Google listing.
   hours: [
     { day: "Mon", hours: "7:00 AM - 5:00 PM" },

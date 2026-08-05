@@ -214,9 +214,14 @@ export default function Header({
               >
                 Contact
               </Link>
-              <Link href="/contact" className="nav-cta">
-                Schedule Service
-              </Link>
+              <a
+                href={business.requestServiceUrl}
+                className="nav-cta"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Request Service
+              </a>
             </nav>
 
             <button
@@ -348,9 +353,15 @@ export default function Header({
           </Link>
         </div>
 
-        <Link href="/contact" className="mobile-nav-cta" onClick={toggleMenu}>
-          Schedule Service
-        </Link>
+        <a
+          href={business.requestServiceUrl}
+          className="mobile-nav-cta"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={toggleMenu}
+        >
+          Request Service
+        </a>
       </nav>
     </>
   );

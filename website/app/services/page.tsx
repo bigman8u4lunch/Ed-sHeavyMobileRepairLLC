@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
-import { services } from "@/lib/site-data";
+import { business, services } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Our Services",
@@ -50,10 +49,15 @@ export default function ServicesPage() {
             Contact us today to schedule your service appointment or get a quote for
             your fleet.
           </p>
-          <Link href="/contact" className="cta-button">
-            Schedule Service
+          <a
+            href={business.requestServiceUrl}
+            className="cta-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Request Service
             <ArrowIcon />
-          </Link>
+          </a>
         </div>
       </section>
 
