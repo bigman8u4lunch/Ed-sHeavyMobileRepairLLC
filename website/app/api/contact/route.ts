@@ -38,18 +38,10 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-export async function POST(request: Request) {
-  let body: ContactPayload;
-
-  try {
-    body = (await request.json()) as ContactPayload;
-  } catch {
-    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
-  }
-
+function parseAndValidate(body: ContactPayload) {
   // Honeypot — bots fill hidden fields; treat as success without sending.
   if (body.website) {
-    return NextResponse.json({ ok: true });
+    return { ok: true as const, honeypot: true as const };
   }
 
   const name = body.name?.trim() ?? "";
@@ -59,30 +51,58 @@ export async function POST(request: Request) {
   const message = body.message?.trim() ?? "";
 
   if (!name || !phone || !email || !inquiryType || !message) {
-    return NextResponse.json(
-      { error: "Please fill out all required fields." },
-      { status: 400 }
-    );
+    return {
+      ok: false as const,
+      status: 400,
+      error: "Please fill out all required fields.",
+    };
   }
 
   if (!isValidEmail(email)) {
-    return NextResponse.json(
-      { error: "Please enter a valid email address." },
-      { status: 400 }
-    );
+    return {
+      ok: false as const,
+      status: 400,
+      error: "Please enter a valid email address.",
+    };
   }
 
   if (!INQUIRY_TYPES.has(inquiryType)) {
-    return NextResponse.json(
-      { error: "Please select a valid inquiry type." },
-      { status: 400 }
-    );
+    return {
+      ok: false as const,
+      status: 400,
+      error: "Please select a valid inquiry type.",
+    };
   }
 
   if (name.length > 200 || phone.length > 50 || message.length > 5000) {
-    return NextResponse.json({ error: "Message is too long." }, { status: 400 });
+    return { ok: false as const, status: 400, error: "Message is too long." };
   }
 
+  return {
+    ok: true as const,
+    honeypot: false as const,
+    data: { name, phone, email, inquiryType, message },
+  };
+}
+
+export async function POST(request: Request) {
+  let body: ContactPayload;
+
+  try {
+    body = (await request.json()) as ContactPayload;
+  } catch {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
+
+  const parsed = parseAndValidate(body);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
+  }
+  if (parsed.honeypot) {
+    return NextResponse.json({ ok: true });
+  }
+
+  const { name, phone, email, inquiryType, message } = parsed.data;
   const subject = `Service Inquiry: ${inquiryType} - ${name}`;
   const text = [
     `Name: ${name}`,
@@ -105,70 +125,31 @@ export async function POST(request: Request) {
   `;
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (apiKey) {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: [TO_EMAIL],
-      replyTo: email,
-      subject,
-      text,
-      html,
-    });
-
-    if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json(
-        {
-          error:
-            "Unable to send your message right now. Please try again or call us.",
-        },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ ok: true });
+  if (!apiKey) {
+    // Signal the browser client to deliver via FormSubmit (server IPs are CF-blocked).
+    return NextResponse.json(
+      {
+        code: "EMAIL_NOT_CONFIGURED",
+        to: TO_EMAIL,
+        error:
+          "Server email is not configured. The form will try browser delivery.",
+      },
+      { status: 503 }
+    );
   }
 
-  // Zero-config fallback when Resend is not provisioned yet.
-  // First delivery requires confirming the activation email sent to TO_EMAIL.
-  try {
-    const response = await fetch(
-      `https://formsubmit.co/ajax/${encodeURIComponent(TO_EMAIL)}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          inquiry_type: inquiryType,
-          message,
-          _subject: subject,
-          _replyto: email,
-          _template: "table",
-        }),
-      }
-    );
+  const resend = new Resend(apiKey);
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: [TO_EMAIL],
+    replyTo: email,
+    subject,
+    text,
+    html,
+  });
 
-    if (!response.ok) {
-      const details = await response.text().catch(() => "");
-      console.error("FormSubmit error:", response.status, details);
-      return NextResponse.json(
-        {
-          error:
-            "Unable to send your message right now. Please try again or call us.",
-        },
-        { status: 502 }
-      );
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("Contact delivery error:", err);
+  if (error) {
+    console.error("Resend error:", error);
     return NextResponse.json(
       {
         error:
@@ -177,4 +158,6 @@ export async function POST(request: Request) {
       { status: 502 }
     );
   }
+
+  return NextResponse.json({ ok: true });
 }

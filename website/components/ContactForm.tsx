@@ -3,6 +3,56 @@
 import { useState, FormEvent } from "react";
 import { business } from "@/lib/site-data";
 
+type ContactPayload = {
+  name: string;
+  phone: string;
+  email: string;
+  inquiry_type: string;
+  message: string;
+  website: string;
+};
+
+async function sendViaFormSubmit(payload: ContactPayload, toEmail: string) {
+  const subject = `Service Inquiry: ${payload.inquiry_type} - ${payload.name}`;
+  const response = await fetch(
+    `https://formsubmit.co/ajax/${encodeURIComponent(toEmail)}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: payload.name,
+        phone: payload.phone,
+        email: payload.email,
+        inquiry_type: payload.inquiry_type,
+        message: payload.message,
+        _subject: subject,
+        _replyto: payload.email,
+        _template: "table",
+      }),
+    }
+  );
+
+  const result = (await response.json().catch(() => null)) as {
+    success?: string | boolean;
+    message?: string;
+  } | null;
+
+  const succeeded =
+    response.ok &&
+    (result?.success === true ||
+      result?.success === "true" ||
+      // First-time activation responses still indicate the request was accepted.
+      (typeof result?.message === "string" &&
+        /check your email|activate|confirm/i.test(result.message)));
+
+  if (!succeeded) {
+    throw new Error(result?.message || "FormSubmit delivery failed");
+  }
+}
+
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +66,7 @@ export default function ContactForm() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    const payload = {
+    const payload: ContactPayload = {
       name: String(data.get("name") ?? ""),
       phone: String(data.get("phone") ?? ""),
       email: String(data.get("email") ?? ""),
@@ -34,18 +84,28 @@ export default function ContactForm() {
 
       const result = (await response.json().catch(() => null)) as {
         error?: string;
+        code?: string;
+        to?: string;
       } | null;
 
-      if (!response.ok) {
-        setError(
-          result?.error ??
-            `Something went wrong. Please call us at ${business.phone}.`
-        );
+      if (response.ok) {
+        setSubmitted(true);
+        form.reset();
         return;
       }
 
-      setSubmitted(true);
-      form.reset();
+      // No Resend key — deliver from the browser to service@edsheavymobile.com.
+      if (response.status === 503 && result?.code === "EMAIL_NOT_CONFIGURED") {
+        await sendViaFormSubmit(payload, result.to || business.email);
+        setSubmitted(true);
+        form.reset();
+        return;
+      }
+
+      setError(
+        result?.error ??
+          `Something went wrong. Please call us at ${business.phone}.`
+      );
     } catch {
       setError(`Something went wrong. Please call us at ${business.phone}.`);
     } finally {
