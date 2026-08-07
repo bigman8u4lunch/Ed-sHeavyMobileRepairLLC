@@ -32,6 +32,7 @@ export const business = {
     { day: "Sun", hours: "Closed" },
   ] satisfies BusinessHour[],
   gtmId: "GTM-NSCH3JX9",
+  metaPixelId: "1030853136227899",
 };
 
 export const services = [
